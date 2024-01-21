@@ -37,6 +37,14 @@ if(isset($_SESSION["ShopperName"])) {
 style="color:#F7BE81; max-width: 80%;"> 
 <?php echo $content1; ?>
 </span>
+
+<form name="frmSearch" method="get" action="search.php">
+    <div class="search-container">
+  <input type="search" id="search" name="keywords" placeholder="Search..." required>
+  <button type="submit"><img src="Images/Others/searchicon.png" alt="Search"></button>
+</div>
+</form>
+
 <!-- Toggler/Collapsibe Button -->
 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
 <span class="navbar-toggler-icon"></span>
@@ -66,3 +74,62 @@ style="color:#F7BE81; max-width: 80%;">
 </div>
 </div>
 </nav>
+
+<style>
+
+.search-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+input[type="search"] {
+  width: 100%;
+  padding: 8px 40px 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+button[type="submit"] {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  transform: translateY(-50%) scale(1.2);
+}
+
+button[type="submit"] img {
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+button[type="submit"] img {
+  animation: pulse 2s infinite;
+}
+    </style>

@@ -25,7 +25,7 @@ while ($row = $result->fetch_array()) {
         echo "<div class='col-sm-12' style='padding:5px'>";
         echo "<span class='page-title'>$row[ProductTitle]</span>";
         echo "</div>";
-        echo "</div>";
+       
         echo "<div class='row'>"; // Start a new row
         // Left column - display the product's description, 
         echo "<div class='col-sm-9' style='padding:5px'>"; 
