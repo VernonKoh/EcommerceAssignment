@@ -39,8 +39,8 @@ if (isset($_SESSION["ShopperName"])) {
 
     <form name="frmSearch" method="get" action="search.php">
       <div class="search-container">
-        <input type="search" id="search" name="keywords" placeholder="Search..." required>
-        <button type="submit"><img src="Images/Others/searchicon.png" alt="Search"></button>
+        <input type="search" class="search-bar" s id="search" name="keywords" placeholder="Search..." required>
+        <button type="submit" class="submit-button"><img src="Images/Others/searchicon.png" alt="Search"></button>
       </div>
     </form>
 
@@ -60,12 +60,10 @@ if (isset($_SESSION["ShopperName"])) {
     <div class="collapse navbar-collapse" id="collapsibleNavbar"> <!-- Left-justified menu items -->
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" href="index.php">Home</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link" href="category.php">Product Categories</a>
         </li>
-
+        <!-- <li class="nav-item" >
+<a class="nav-link" href="search.php">Product Search</a> </li> -->
         <li class="nav-item">
           <a class="nav-link" href="shoppingCart.php">Shopping Cart</a>
         </li>
@@ -86,7 +84,7 @@ if (isset($_SESSION["ShopperName"])) {
     margin: 0 auto;
   }
 
-  input[type="search"] {
+  .search-bar {
     width: 100%;
     padding: 8px 40px 8px 10px;
     border: 1px solid #ccc;
@@ -95,7 +93,7 @@ if (isset($_SESSION["ShopperName"])) {
     box-sizing: border-box;
   }
 
-  button[type="submit"] {
+  .submit-button {
     position: absolute;
     top: 50%;
     right: 0;
@@ -109,11 +107,11 @@ if (isset($_SESSION["ShopperName"])) {
     transition: transform 0.3s ease;
   }
 
-  button[type="submit"]:hover {
-    transform: translateY(-50%) scale(1.2);
-  }
+  /* button[type="submit"]:hover {
+  transform: translateY(-50%) scale(1.2);
+} */
 
-  button[type="submit"] img {
+  .submit-button img {
     width: 100%;
     height: auto;
     vertical-align: middle;
@@ -133,7 +131,7 @@ if (isset($_SESSION["ShopperName"])) {
     }
   }
 
-  button[type="submit"] img {
+  .submit-button img {
     animation: pulse 2s infinite;
   }
 </style>

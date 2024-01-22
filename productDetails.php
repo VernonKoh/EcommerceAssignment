@@ -63,8 +63,8 @@ echo "<form action='cartFunctions.php' method='post'>";
     
     
     echo "Quantity: <input type='number' name='quantity' value='1' min='1' max='10' style='width:40px' required />";
-    
 echo "<button type='submit' class='cartbutton'>Add to Cart</button>";
+
 echo "</form>";
 
 echo "</div>"; //end of right column
@@ -111,7 +111,7 @@ include("footer.php"); // Include the Page Layout footer
   40% { transform: rotate(-10deg); }
   50% { transform: rotate(0deg); }
 }
-button:hover {
+.cartbutton:hover {
   animation: wobble 0.5s ease-in-out;
 }
     </style>

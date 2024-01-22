@@ -23,6 +23,7 @@ $result = $conn->query($qry); // Execute the SQL and get the result
 
 // Display each category in a row
 while ($row = $result->fetch_array()) {
+    
 echo "<div class='row' style='padding:5px'>"; // Start a new row
 // Left column - display a text link showing the category's name, 
 // display category's description in a new paragraph
