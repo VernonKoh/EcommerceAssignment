@@ -25,7 +25,7 @@ while ($row = $result->fetch_array()) {
         echo "<div class='col-sm-12' style='padding:5px'>";
         echo "<span class='page-title'>$row[ProductTitle]</span>";
         echo "</div>";
-        echo "</div>";
+       
         echo "<div class='row'>"; // Start a new row
         // Left column - display the product's description, 
         echo "<div class='col-sm-9' style='padding:5px'>"; 
@@ -63,8 +63,8 @@ echo "<form action='cartFunctions.php' method='post'>";
     
     
     echo "Quantity: <input type='number' name='quantity' value='1' min='1' max='10' style='width:40px' required />";
-    
 echo "<button type='submit' class='cartbutton'>Add to Cart</button>";
+
 echo "</form>";
 
 echo "</div>"; //end of right column
@@ -111,7 +111,7 @@ include("footer.php"); // Include the Page Layout footer
   40% { transform: rotate(-10deg); }
   50% { transform: rotate(0deg); }
 }
-button:hover {
+.cartbutton:hover {
   animation: wobble 0.5s ease-in-out;
 }
     </style>
