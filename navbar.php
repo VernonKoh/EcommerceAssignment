@@ -41,7 +41,7 @@ style="color:#F7BE81; max-width: 80%;">
 <form name="frmSearch" method="get" action="search.php">
     <div class="search-container">
   <input type="search" id="search" name="keywords" placeholder="Search..." required>
-  <button type="submit"><img src="Images/Others/searchicon.png" alt="Search"></button>
+  <button type="submit" class="submit-button"><img src="Images/Others/searchicon.png" alt="Search"></button>
 </div>
 </form>
 
@@ -62,7 +62,8 @@ style="color:#F7BE81; max-width: 80%;">
 <ul class="navbar-nav me-auto">
 <li class="nav-item">
 <a class="nav-link" href="category.php">Product Categories</a> </li>
-
+<!-- <li class="nav-item" >
+<a class="nav-link" href="search.php">Product Search</a> </li> -->
 <li class="nav-item" >
 <a class="nav-link" href="shoppingCart.php">Shopping Cart</a> </li>
 </ul>
@@ -92,7 +93,7 @@ input[type="search"] {
   box-sizing: border-box;
 }
 
-button[type="submit"] {
+.submit-button {
   position: absolute;
   top: 50%;
   right: 0;
@@ -106,11 +107,11 @@ button[type="submit"] {
   transition: transform 0.3s ease;
 }
 
-button[type="submit"]:hover {
+/* button[type="submit"]:hover {
   transform: translateY(-50%) scale(1.2);
-}
+} */
 
-button[type="submit"] img {
+.submit-button img {
   width: 100%;
   height: auto;
   vertical-align: middle;
@@ -128,7 +129,7 @@ button[type="submit"] img {
   }
 }
 
-button[type="submit"] img {
+.submit-button img {
   animation: pulse 2s infinite;
 }
     </style>
