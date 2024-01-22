@@ -1,4 +1,5 @@
 <?php
+ob_start(); // Start output buffering
 session_start();
 if (isset($_POST['action'])) {
     switch ($_POST['action']) {
@@ -156,4 +157,5 @@ function removeItem()
     header("Location: shoppingCart.php");
     exit;
 }
+ob_end_flush(); // Flush the output buffer
 ?>

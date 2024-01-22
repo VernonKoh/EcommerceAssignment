@@ -1,4 +1,5 @@
 <?php
+ob_start(); // Start output buffering
 // Include the code that contains shopping cart's functions.
 // Current session is detected in "cartFunctions.php, hence need not start session here.
 include_once("cartFunctions.php");
@@ -113,4 +114,5 @@ if (isset($_SESSION["Cart"])) {
 }
 echo "</div>"; // End of container
 include("footer.php"); // Include the Page Layout footer
+ob_end_flush(); // Flush the output buffer
 ?>
