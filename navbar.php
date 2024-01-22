@@ -62,8 +62,7 @@ style="color:#F7BE81; max-width: 80%;">
 <ul class="navbar-nav me-auto">
 <li class="nav-item">
 <a class="nav-link" href="category.php">Product Categories</a> </li>
-<li class="nav-item" >
-<a class="nav-link" href="search.php">Product Search</a> </li>
+
 <li class="nav-item" >
 <a class="nav-link" href="shoppingCart.php">Shopping Cart</a> </li>
 </ul>
