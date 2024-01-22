@@ -18,12 +18,12 @@ if (isset($_GET["keywords"]) && trim($_GET['keywords']) != "") {
     $qry = "SELECT DISTINCT p.ProductID, p.ProductTitle, p.ProductImage,p.ProductDesc ,p.Price, p.Quantity 
     FROM Product p INNER JOIN ProductSpec ps ON p.ProductID=ps.ProductID
     WHERE (ProductTitle LIKE ?) or (ProductDesc like ?)
-    OR (SpecVal LIKE ?)
+    OR (SpecVal LIKE ?) OR (Price LIKE ?)
     ORDER BY ProductTitle";
 
     $stmt = $conn->prepare($qry);
     // $SearchText = "%".$SearchText."%";
-    $stmt->bind_param("sss", $SearchText, $SearchText,$SearchText); // "i" integer
+    $stmt->bind_param("sssd", $SearchText, $SearchText,$SearchText,$SearchText); // "i" integer
     $stmt->execute();
     $result = $stmt->get_result(); 
     $stmt->close();

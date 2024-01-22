@@ -40,7 +40,7 @@ style="color:#F7BE81; max-width: 80%;">
 
 <form name="frmSearch" method="get" action="search.php">
     <div class="search-container">
-  <input type="search" id="search" name="keywords" placeholder="Search..." required>
+  <input type="search" class="search-bar"s id="search" name="keywords" placeholder="Search..." required>
   <button type="submit" class="submit-button"><img src="Images/Others/searchicon.png" alt="Search"></button>
 </div>
 </form>
@@ -84,7 +84,7 @@ style="color:#F7BE81; max-width: 80%;">
   margin: 0 auto;
 }
 
-input[type="search"] {
+.search-bar {
   width: 100%;
   padding: 8px 40px 8px 10px;
   border: 1px solid #ccc;
