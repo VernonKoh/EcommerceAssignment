@@ -1,4 +1,5 @@
 <?php
+ob_start(); // Start output buffering
 // Detect the current session
 session_start();
 // Include the Page Layout header
@@ -28,7 +29,7 @@ if ($stmt->execute()) {
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
 
-    if ($row && password_verify($password, $row["Password"])) {
+    if ($row && $password === $row["Password"]) {
         // Valid login
         $_SESSION["ShopperName"] = $row["Name"];
         $_SESSION["ShopperID"] = $row["ShopperID"];
@@ -44,23 +45,18 @@ if ($stmt->execute()) {
         if ($result->num_rows > 0) {
             // Active shopping cart found, retrieve ShopCartID
             $row = $result->fetch_assoc();
-            // Get the hashed password from database
-            $hashed_password = $row["Password"];
-            // Verifies that a password matches a hash
-            if (password_verify($password, $hashed_password) == true) {
-                $_SESSION["Cart"] = $row["ShopCartID"];
+            $_SESSION["Cart"] = $row["ShopCartID"];
 
-                // Count the number of uncheckout items
-                $qry = "SELECT COUNT(*) AS NumItems FROM ShopCartItem WHERE ShopCartID=?";
-                $stmt = $conn->prepare($qry);
-                $stmt->bind_param("i", $_SESSION["Cart"]);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                $stmt->close();
+            // Count the number of uncheckout items
+            $qry = "SELECT COUNT(*) AS NumItems FROM ShopCartItem WHERE ShopCartID=?";
+            $stmt = $conn->prepare($qry);
+            $stmt->bind_param("i", $_SESSION["Cart"]);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $stmt->close();
 
-                $row = $result->fetch_assoc();
-                $_SESSION["NumCartItem"] = $row["NumItems"];
-            }
+            $row = $result->fetch_assoc();
+            $_SESSION["NumCartItem"] = $row["NumItems"];
         } else {
             // No active shopping cart found
             $_SESSION["Cart"] = null;
@@ -83,4 +79,5 @@ if ($stmt->execute()) {
 
 // Include the Page Layout footer
 include("footer.php");
+ob_end_flush(); // Flush the output buffer
 ?>
