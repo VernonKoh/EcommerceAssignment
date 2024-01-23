@@ -107,6 +107,30 @@ if (isset($_SESSION["Cart"])) {
 
         // To Do 7 (Practical 5):
         
+        echo "<form action='checkoutProcess.php' method='post' id='checkoutForm'>";
+        echo "<b style='margin-bottom: 10px; display: block;'>Delivery Mode:</b>";
+        echo "<div style='margin-bottom: 10px;'>";
+        echo "<input type='radio' name='delivery_mode' value='Normal Delivery'> Normal Delivery (S$ 5) - Delivered within 2 working days ";
+        echo "</div>";
+        echo "<div>";
+        echo "<input type='radio' name='delivery_mode' value='Express Delivery'> Express Delivery (S$ 10)- Delivered within 24 hours";
+        echo "</div>";
+        echo "<button type='button' class='btn btn-primary' onclick='updateCharges()' style='margin-top: 10px;'>Calculate Charges</button>";
+        // Add spacing using div elements
+        echo "<div style='height: 40px;'></div>";
+        // Display the shipping charges and overall total
+        echo "<div id='shippingCharge' ></div>";
+        echo "<div id='overallTotal' style='text-align:right; font-size:15px; margin-top: 20px; font-weight: bold;'></div>";
+        // Add PayPal Checkout button on the shopping cart page
+        echo "<input type='image' style='float:right; margin-top: 20px;'
+        src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' onclick='return validateForm()'>";
+        echo "</form></p>";
+        echo "<br>";
+        echo "<br>";
+        echo "<br>";
+        echo "<br>";
+
+
 
     } else {
         echo "<h3 style='text-align:center; color:red;'>Empty shopping cart!</h3>";
@@ -116,14 +140,7 @@ if (isset($_SESSION["Cart"])) {
     echo "<h3 style='text-align:center; color:red;'>Empty shopping cart!</h3>";
 }
 
-echo "<form action='checkoutProcess.php' method='post' id='checkoutForm'>";
-echo "<label>Delivery Mode:</label>";
-echo "<br>";
-echo "<input type='radio' name='delivery_mode' value='Normal Delivery'> Normal Delivery ";
-echo "<br>";
-echo "<input type='radio' name='delivery_mode' value='Express Delivery'> Express Delivery ";
-echo "<br>";
-echo "<button type='button' class='btn btn-primary' onclick='updateCharges()'>Calculate Charges</button>";
+
 
 // JavaScript function to update charges based on the selected delivery mode
 echo "<script>
@@ -137,7 +154,7 @@ function updateCharges() {
     var shipCharge = (deliveryMode.value === 'Normal Delivery') ? 5.00 : 10.00;
 
     // Display the shipping charges
-    document.getElementById('shippingCharge').innerHTML = 'Shipping Charge: S$' + shipCharge.toFixed(2);
+    document.getElementById('shippingCharge').innerHTML = 'Delivery Fee: S$' + shipCharge.toFixed(2);
 
     // Update the total calculation to include the shipping charges
     var subtotal = parseFloat(" . $_SESSION["SubTotal"] . ");
@@ -147,18 +164,22 @@ function updateCharges() {
     var total = subtotal + deliveryCharge;
 
     // Display the overall total
-    document.getElementById('overallTotal').innerHTML = 'Overall Total: S$' + total.toFixed(2);
+    document.getElementById('overallTotal').innerHTML = 'Total (Inclusive of Delivery Fees): S$' + total.toFixed(2);
+}
+
+function validateForm() {
+    var deliveryMode = document.querySelector('input[name=\"delivery_mode\"]:checked');
+    if (!deliveryMode) {
+        alert('Please select a delivery mode before checking out');
+        return false;
+    }
+    return true;
 }
 </script>";
 
-// Display the shipping charges and overall total
-echo "<div id='shippingCharge'></div>";
-echo "<div id='overallTotal' style='text-align:right; font-size:20px; margin-top: 10px;'></div>";
 
-// Add PayPal Checkout button on the shopping cart page
-echo "<input type='image' style='float:right; margin-top: 10px;'
-             src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif'>";
-echo "</form></p>";
+
+
 
 echo "</div>"; // End of the container
 include("footer.php"); // Include the Page Layout footer
