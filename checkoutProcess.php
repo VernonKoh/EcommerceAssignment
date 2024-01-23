@@ -3,6 +3,7 @@ session_start();
 include("header.php"); // Include the Page Layout header
 include_once("myPayPal.php"); // Include the file that contains PayPal settings
 include_once("mysql_conn.php");
+include_once("mysql_conn.php");
 
 if ($_POST) // Post Data received from Shopping cart page.
 {
