@@ -32,11 +32,11 @@
                             <div class="row">
                                 <div class="col-md-4">
                                     <label for="">Start Price</label>
-                                    <input type="text" name="start_price" value="<?php if(isset($_GET['start_price'])){echo $_GET['start_price']; }else{echo "0";} ?>" class="form-control">
+                                    <input type="text" name="start_price" value="<?php if(isset($_GET['start_price'])){echo $_GET['start_price']; }else{echo "0";} ?>" class="form-control" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="">End Price</label>
-                                    <input type="text" name="end_price" value="<?php if(isset($_GET['end_price'])){echo $_GET['end_price']; }else{echo "0";} ?>" class="form-control">
+                                    <input type="text" name="end_price" value="<?php if(isset($_GET['end_price'])){echo $_GET['end_price']; }else{echo "0";} ?>" class="form-control" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="">Click Me</label> <br/>
@@ -131,3 +131,41 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+<style>
+    .category-link {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .category-link a {
+        color: #0066cc;
+        text-decoration: none;
+
+    }
+
+    .category-link a:hover {
+        text-decoration: underline;
+
+    }
+
+    .flower {
+        text-align: center;
+    }
+
+    .flower img {
+        width: 200px;
+        height: 200px;
+        vertical-align: middle;
+    }
+
+    .flower p {
+        display: inline-block;
+        vertical-align: middle;
+        font-size: 18px;
+        font-weight: bold;
+        margin-left: 20px;
+    }
+    </style>

@@ -50,6 +50,24 @@ include("header.php"); // Include the Page Layout header
     // Right column - display the product's price
     $formattedPrice = number_format($row["Price"], 2);
     echo "Price:<span style='font-weight:bold; color:red;'> S$ $formattedPrice</span>";
+
+    if ($row["Quantity"] <= 0) {
+      echo "<p style='color:red; font-size:30px;'>Out of Stock</p>";
+      echo "<button type='submit' class='buttondisable' disabled>Add to Cart</button>";
+    }
+    else{
+      echo "<form action='cartFunctions.php' method='post'>";
+      echo "<input type='hidden' name='action' value='add' />";
+      echo "<input type='hidden' name='product_id' value='$pid' />";
+
+
+      echo "Quantity: <input type='number' name='quantity' value='1' min='1' max='10' style='width:40px' required />";
+      echo "<button type='submit' class='cartbutton'>Add to Cart</button>";
+
+      echo "</form>";
+    }
+    echo "</div>"; //end of right column
+    echo "</div>"; //end of row
   }
 
 
@@ -57,30 +75,24 @@ include("header.php"); // Include the Page Layout header
   
   // To Do 2:  Create a Form for adding the product to shopping cart. Starting ....
   
-  echo "<form action='cartFunctions.php' method='post'>";
-  echo "<input type='hidden' name='action' value='add' />";
-  echo "<input type='hidden' name='product_id' value='$pid' />";
-
-
-  echo "Quantity: <input type='number' name='quantity' value='1' min='1' max='10' style='width:40px' required />";
-  echo "<button type='submit' class='cartbutton'>Add to Cart</button>";
-
-  echo "</form>";
-
-  echo "</div>"; //end of right column
-  echo "</div>"; //end of row
-  
   // To Do 2:  Ending ....
   
   $conn->close(); // Close database connnection
   echo "</div>"; // End of container
   include("footer.php"); // Include the Page Layout footer
   
+  //start
+// ...
+
+
+
+// ...
   ?>
 
   <style>
     .flower {
       text-align: center;
+      
     }
 
     .flower img {
@@ -106,6 +118,17 @@ include("header.php"); // Include the Page Layout header
       color: #FFFFFF;
       /* White */
       border: none;
+    }
+    .buttondisable {
+      padding: 10px 20px;
+      margin: 10px;
+      font-family: Arial, sans-serif;
+      background-color: grey;
+      /* Blue */
+      color: black;
+      /* White */
+      border: none;
+      opacity: 0.5;
     }
 
     @keyframes wobble {
