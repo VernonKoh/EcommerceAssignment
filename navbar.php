@@ -63,7 +63,7 @@ if (isset($_SESSION["ShopperName"])) {
           <a class="nav-link" href="category.php">Product Categories</a>
         </li>
          <li class="nav-item" >
-<a class="nav-link" href="search.php">Product Search</a> </li> 
+<a class="nav-link" href="pricesearch.php">Price Search</a> </li> 
         <li class="nav-item">
           <a class="nav-link" href="shoppingCart.php">Shopping Cart</a>
         </li>
