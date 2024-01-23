@@ -21,9 +21,11 @@ include("header.php"); // Include the Page Layout header
   
   while ($row = $result->fetch_array()) {
     // Display Page Header -
-    // Product's name is read from the "ProductTitle" column of "product" table. echo "<div class='row' >";
+    // Product's name is read from the "ProductTitle" column of "product" table.
+    echo "<div class='row' >";
     echo "<div class='col-sm-12' style='padding:5px'>";
     echo "<span class='page-title'>$row[ProductTitle]</span>";
+    echo "</div>";
     echo "</div>";
 
     echo "<div class='row'>"; // Start a new row
@@ -47,20 +49,30 @@ include("header.php"); // Include the Page Layout header
     $img = "./Images/Products/$row[ProductImage]";
     echo "<div class='col-sm-3' style='vertical-align:top; padding:5px'>";
     echo "<p class='flower'><img src=$img /></p>";
-    // Right column - display the product's price
-    $formattedPrice = number_format($row["Price"], 2);
-    echo "Price:<span style='font-weight:bold; color:red;'> S$ $formattedPrice</span>";
 
+    if ($row["OfferedPrice"] == null) {
+    // Display the price before offer and strike it off
+    $formattedPrice = number_format($row["Price"], 2);
+    echo "<p style='font-weight:bold; color:red; font-size:20px;'>Price: S$ $formattedPrice</p>";
+    }
+
+    else{
+      // Display the price before offer and strike it off
+    $formattedPrice = number_format($row["Price"], 2);
+    echo "<p style='text-decoration: line-through;'>Price: S$ $formattedPrice</p>";
+    // Right column - display the product's price
+    $formattedPriceBeforeOffer = number_format($row["OfferedPrice"], 2);
+    echo "<p style='font-weight:bold; color:red; font-size:20px;'>On Offer: S$ $formattedPriceBeforeOffer</p>";
+    }
     if ($row["Quantity"] <= 0) {
       echo "<p style='color:red; font-size:30px;'>Out of Stock</p>";
       echo "<button type='submit' class='buttondisable' disabled>Add to Cart</button>";
     }
+
     else{
       echo "<form action='cartFunctions.php' method='post'>";
       echo "<input type='hidden' name='action' value='add' />";
       echo "<input type='hidden' name='product_id' value='$pid' />";
-
-
       echo "Quantity: <input type='number' name='quantity' value='1' min='1' max='10' style='width:40px' required />";
       echo "<button type='submit' class='cartbutton'>Add to Cart</button>";
 
@@ -81,12 +93,8 @@ include("header.php"); // Include the Page Layout header
   echo "</div>"; // End of container
   include("footer.php"); // Include the Page Layout footer
   
-  //start
-// ...
 
 
-
-// ...
   ?>
 
   <style>

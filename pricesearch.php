@@ -16,7 +16,7 @@
 <body>
 <div class="row">
             <div class="col-sm-12">
-                <?php include("navbar.php");?>
+                <?php include("header.php");?>
 
             </div>
     <div class="container">
@@ -71,15 +71,28 @@
                             }
                             else{
                             //$query = "SELECT * FROM product WHERE Price BETWEEN $startprice AND $endprice ";
-                            $query="SELECT DISTINCT p.ProductID, p.ProductTitle, p.ProductImage,p.ProductDesc ,p.Price, p.Quantity 
+                            $query="SELECT DISTINCT p.ProductID, p.ProductTitle, p.ProductImage,p.ProductDesc ,p.Price, p.Quantity ,p.Offered,p.OfferedPrice
                             FROM Product p INNER JOIN ProductSpec ps ON p.ProductID=ps.ProductID
-                            WHERE Price Between $startprice AND $endprice OR (Price = $startprice AND Price <= $endprice)
-                            OR (Price >= $startprice AND Price = $endprice) ORDER BY ProductTitle";
+                            WHERE 
+                            CASE 
+                            WHEN p.Offered = 1 THEN 
+                            p.OfferedPrice 
+                            BETWEEN $startprice AND $endprice 
+                            OR (p.OfferedPrice = $startprice AND p.OfferedPrice <= $endprice)
+                            OR (p.OfferedPrice >= $startprice AND p.OfferedPrice = $endprice)
+                            ELSE 
+                            p.Price 
+                            BETWEEN $startprice AND $endprice 
+                            OR (p.Price = $startprice AND p.Price <= $endprice)
+                            OR (p.Price >= $startprice AND p.Price = $endprice)
+                            END
+                            ORDER BY ProductTitle";
                             }
                         }
+
                         else
                         {
-                            $query = "SELECT DISTINCT p.ProductID, p.ProductTitle, p.ProductImage,p.ProductDesc ,p.Price, p.Quantity 
+                            $query = "SELECT DISTINCT p.ProductID, p.ProductTitle, p.ProductImage,p.ProductDesc ,p.Price, p.Quantity ,p.Offered,p.OfferedPrice
                             FROM Product p INNER JOIN ProductSpec ps ON p.ProductID=ps.ProductID ORDER BY ProductTitle";
                         }
                         
@@ -101,7 +114,19 @@
                                 echo "<div class='col-8'>"; // 67% of row width
                                 echo "<p class='category-link'><a href='{$product}'>{$row['ProductTitle']}</a></p>";
                                 echo "<p>{$row['ProductDesc']}</p>";
-                                echo "<span style='font-weight: bold; color: red;'>Price: S$ {$formattedPrice}</span>";
+                                if ($row["OfferedPrice"] == null) {
+                                    // Display the price before offer and strike it off
+                                    $formattedPrice = number_format($row["Price"], 2);
+                                    echo "<p style='font-weight:bold; color:red; font-size:20px;'>Price: S$ $formattedPrice</p>";
+                                    }
+                                else{
+                                        // Display the price before offer and strike it off
+                                      $formattedPrice = number_format($row["Price"], 2);
+                                      echo "<p style='text-decoration: line-through;'>Price: S$ $formattedPrice</p>";
+                                      // Right column - display the product's price
+                                      $formattedPriceBeforeOffer = number_format($row["OfferedPrice"], 2);
+                                      echo "<p style='font-weight:bold; color:red; font-size:20px;'><span style='color:green'>On Offer!:</span> S$ $formattedPriceBeforeOffer</p>";
+                                      }
                                 echo "</div>";
                     
                                 // Product image (right column)
