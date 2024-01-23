@@ -1,4 +1,5 @@
 <?php
+
 //Display guest welcome message, Login and Registration links
 //when shopper has yet to login,
 $content1 = "Welcome Guest<br />";
@@ -26,10 +27,9 @@ if (isset($_SESSION["ShopperName"])) {
   }
 }
 ?>
+
 <!-- To Do 3 (Practical 1) - 
      Display a navbar which is visible before or after collapsing -->
-
-
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <div class="container-fluid">
     <!-- Dynamic Text Display -->
@@ -62,8 +62,8 @@ if (isset($_SESSION["ShopperName"])) {
         <li class="nav-item">
           <a class="nav-link" href="category.php">Product Categories</a>
         </li>
-        <!-- <li class="nav-item" >
-<a class="nav-link" href="search.php">Product Search</a> </li> -->
+         <li class="nav-item" >
+<a class="nav-link" href="search.php">Product Search</a> </li> 
         <li class="nav-item">
           <a class="nav-link" href="shoppingCart.php">Shopping Cart</a>
         </li>
