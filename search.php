@@ -15,15 +15,15 @@ if (isset($_GET["keywords"]) && trim($_GET['keywords']) != "") {
     echo "<p> Search Results for <b> $_GET[keywords] </b>: </p>";
 
     // Form SQL to retrieve list of products associated to the Search Text
-    $qry = "SELECT DISTINCT p.ProductID, p.ProductTitle, p.ProductImage,p.ProductDesc ,p.Price, p.Quantity 
-    FROM Product p INNER JOIN ProductSpec ps ON p.ProductID=ps.ProductID
+    $qry = "SELECT DISTINCT p.ProductID, p.ProductTitle, p.ProductImage,p.ProductDesc ,p.Price, p.Quantity,p.Offered,p.OfferedPrice
+    FROM Product p INNER JOIN ProductSpec ps ON p.ProductID=ps.ProductID INNER JOIN Specification s ON ps.SpecID=s.SpecID
     WHERE (ProductTitle LIKE ?) or (ProductDesc like ?)
-    OR (SpecVal LIKE ?) OR (Price LIKE ?)
+    OR (SpecVal LIKE ?) OR (Price LIKE ?) OR (s.SpecName LIKE ?)
     ORDER BY ProductTitle";
 
     $stmt = $conn->prepare($qry);
     // $SearchText = "%".$SearchText."%";
-    $stmt->bind_param("sssd", $SearchText, $SearchText, $SearchText, $SearchText); // "i" integer
+    $stmt->bind_param("sssds", $SearchText, $SearchText, $SearchText, $SearchText,$SearchText); // "i" integer
     $stmt->execute();
     $result = $stmt->get_result();
     $stmt->close();
@@ -42,7 +42,20 @@ if (isset($_GET["keywords"]) && trim($_GET['keywords']) != "") {
             echo "<div class='col-8'>"; // 67% of row width
             echo "<p class='category-link'><a href='{$product}'>{$row['ProductTitle']}</a></p>";
             echo "<p>{$row['ProductDesc']}</p>";
-            echo "<span style='font-weight: bold; color: red;'>Price: S$ {$formattedPrice}</span>";
+            if ($row["OfferedPrice"] == null) {
+                // Display the price before offer and strike it off
+                $formattedPrice = number_format($row["Price"], 2);
+                echo "<p style='font-weight:bold; color:red; font-size:20px;'>Price: S$ $formattedPrice</p>";
+                }
+            else{
+                    // Display the price before offer and strike it off
+                  $formattedPrice = number_format($row["Price"], 2);
+                  echo "<p style='text-decoration: line-through;'>Price: S$ $formattedPrice</p>";
+                  // Right column - display the product's price
+                  $formattedPriceBeforeOffer = number_format($row["OfferedPrice"], 2);
+                  echo "<p style='font-weight:bold; color:red; font-size:20px;'><span style='color:green'>On Offer!:</span> S$ $formattedPriceBeforeOffer</p>";
+                  }
+            //echo "<span style='font-weight: bold; color: red;'>Price: S$ {$formattedPrice}</span>";
             echo "</div>";
 
             // Product image (right column)
