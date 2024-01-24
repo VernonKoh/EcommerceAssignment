@@ -21,7 +21,7 @@ include("header.php"); // Include the Page Layout header
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1300px;
             margin: 30px auto;
             background-color: #fff;
             padding: 20px;

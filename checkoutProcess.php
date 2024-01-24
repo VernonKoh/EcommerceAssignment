@@ -43,8 +43,20 @@ if($_POST) //Post Data received from Shopping cart page.
 		$paypal_data .= '&L_PAYMENTREQUEST_0_NUMBER'.$key.'='.urlencode($item["productId"]);
 	}
 	
-	// To Do 1A: Compute GST amount 7% for Singapore, round the figure to 2 decimal places
-	$_SESSION["Tax"] = 0;
+	// To Do 1A: Fetch current GST rate from the database
+    $getCurrentGstRateQuery = "SELECT TaxRate FROM gst WHERE EffectiveDate <= NOW() ORDER BY EffectiveDate DESC LIMIT 1";
+    $result = $conn->query($getCurrentGstRateQuery);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $currentGstRate = $row['TaxRate'];
+        $_SESSION["TaxRate"] = $currentGstRate;
+    } else {
+        // Handle the case where no GST rate is found
+        echo "<div style='color:red'><b>Error: Unable to retrieve current GST rate.</b></div>";
+        include("footer.php"); // Include the Page Layout footer
+        exit; // Stop the checkout process
+    }
 	
 	// To Do 1A: Compute Shipping charge - Retrieve it dynamically from the form
     if (isset($_POST['delivery_mode'])) {
@@ -66,7 +78,7 @@ if($_POST) //Post Data received from Shopping cart page.
 			  '&PAYMENTREQUEST_0_ITEMAMT='.urlencode($_SESSION["SubTotal"]). 
 			  '&PAYMENTREQUEST_0_SHIPPINGAMT='.urlencode($_SESSION["ShipCharge"]). 
 			  '&PAYMENTREQUEST_0_TAXAMT='.urlencode($_SESSION["Tax"]). 	
-			  '&BRANDNAME='.urlencode("Mamaya e-BookStore").
+			  '&BRANDNAME='.urlencode("Gifting").
 			  $paypal_data.				
 			  '&RETURNURL='.urlencode($PayPalReturnURL ).
 			  '&CANCELURL='.urlencode($PayPalCancelURL);	
