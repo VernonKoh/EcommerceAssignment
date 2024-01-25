@@ -43,20 +43,24 @@ if($_POST) //Post Data received from Shopping cart page.
 		$paypal_data .= '&L_PAYMENTREQUEST_0_NUMBER'.$key.'='.urlencode($item["productId"]);
 	}
 	
-	// To Do 1A: Fetch current GST rate from the database
-    $getCurrentGstRateQuery = "SELECT TaxRate FROM gst WHERE EffectiveDate <= NOW() ORDER BY EffectiveDate DESC LIMIT 1";
-    $result = $conn->query($getCurrentGstRateQuery);
+	// Fetch current GST rate from database
+	$currentDate = date("Y-m-d");
+	$getGSTRateQuery = "SELECT TaxRate FROM gst WHERE EffectiveDate <= ? ORDER BY EffectiveDate DESC LIMIT 1";
+	$stmt = $conn->prepare($getGSTRateQuery);
+	$stmt->bind_param("s", $currentDate);
+	$stmt->execute();
+	$stmt->bind_result($currentGSTRate);
+	$stmt->fetch();
+	$stmt->close();
 
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $currentGstRate = $row['TaxRate'];
-        $_SESSION["TaxRate"] = $currentGstRate;
-    } else {
-        // Handle the case where no GST rate is found
-        echo "<div style='color:red'><b>Error: Unable to retrieve current GST rate.</b></div>";
-        include("footer.php"); // Include the Page Layout footer
-        exit; // Stop the checkout process
-    }
+	// Check if a valid GST rate is retrieved
+	if ($currentGSTRate !== null) {
+		// Update tax session variable with the retrieved tax rate
+		$_SESSION["Tax"] = $currentGSTRate;
+	} else {
+		// Handle case when no valid GST rate is found
+		$_SESSION["Tax"] = 0;
+	}	
 	
 	// To Do 1A: Compute Shipping charge - Retrieve it dynamically from the form
     if (isset($_POST['delivery_mode'])) {
