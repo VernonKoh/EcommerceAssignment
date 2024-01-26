@@ -24,9 +24,10 @@ if($_POST) //Post Data received from Shopping cart page.
 	
 		// Check if stock quantity is sufficient
 		if ($stockQuantity < $quantityPurchased) {
-			// Display an “out of stock” message and stop the checkout process
-			echo "<div style='color:red'><b>Product ID $productId : $item[name] is out of stock.</b></div>";
-			echo "<div>Please return to the shopping cart to amend your purchase.</div>";
+			echo "<div style='color:red; background-color: #ffe6e6; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>";
+			echo "<b>Product ID $productId: $item[name] is out of stock.</b><br>";
+			echo "Please <a href='shoppingCart.php'>return to the shopping cart</a> to amend your purchase.";
+			echo "</div>";s
 			include("footer.php"); // Include the Page Layout footer
 			exit; // Stop the checkout process
 		}

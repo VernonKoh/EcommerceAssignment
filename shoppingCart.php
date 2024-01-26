@@ -110,7 +110,8 @@ if (isset($_SESSION["Cart"])) {
         echo "<form action='checkoutProcess.php' method='post' id='checkoutForm'>";
         echo "<b style='margin-bottom: 10px; display: block;'>Delivery Mode:</b>";
         echo "<div style='margin-bottom: 10px;'>";
-        echo "<input type='radio' name='delivery_mode' value='Normal Delivery'> Normal Delivery (S$ 5) - Delivered within 2 working days ";
+        echo "<input type='radio' name='delivery_mode' value='Normal Delivery' checked> Normal Delivery (S$ 5) - Delivered within 2 working days ";
+
         echo "</div>";
         echo "<div>";
         echo "<input type='radio' name='delivery_mode' value='Express Delivery'> Express Delivery (S$ 10)- Delivered within 24 hours";
