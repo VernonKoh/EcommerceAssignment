@@ -105,7 +105,7 @@ if (isset($_SESSION["Cart"])) {
                 Subtotal = S$" . number_format($subTotal, 2);
         $_SESSION["SubTotal"] = round($subTotal, 2);
 
-        
+
 
     } else {
         echo "<h3 style='text-align:center; color:red;'>Empty shopping cart!</h3>";
@@ -129,7 +129,9 @@ echo "<button type='button' class='btn btn-primary' onclick='updateCharges()' st
 echo "<div style='height: 40px;'></div>";
 // Display the shipping charges and overall total
 echo "<div id='shippingCharge'>Delivery Fee: S$5.00</div>"; // Display default fee for Normal Delivery
-echo "<div id='overallTotal' style='text-align:right; font-size:15px; margin-top: 20px; font-weight: bold;'>Total (Inclusive of Delivery Fees): S$"; echo number_format($_SESSION["SubTotal"] + 5.00, 2); echo "</div>"; // Display total including default fee
+echo "<div id='overallTotal' style='text-align:right; font-size:15px; margin-top: 20px; font-weight: bold;'>Total (Inclusive of Delivery Fees): S$";
+echo number_format($_SESSION["SubTotal"] + 5.00, 2);
+echo "</div>"; // Display total including default fee
 // Add PayPal Checkout button on the shopping cart page
 echo "<input type='image' style='float:right; margin-top: 20px;' src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' onclick='return validateForm()'>";
 echo "</form></p>";
