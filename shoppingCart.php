@@ -106,16 +106,6 @@ if (isset($_SESSION["Cart"])) {
         $_SESSION["SubTotal"] = round($subTotal, 2);
 
 
-
-    } else {
-        echo "<h3 style='text-align:center; color:red;'>Empty shopping cart!</h3>";
-    }
-    $conn->close(); // Close the database connection
-} else {
-    echo "<h3 style='text-align:center; color:red;'>Empty shopping cart!</h3>";
-}
-
-
         echo "<form action='checkoutProcess.php' method='post' id='checkoutForm'>";
         echo "<b style='margin-bottom: 10px; display: block;'>Delivery Mode:</b>";
         echo "<div style='margin-bottom: 10px;'>";
