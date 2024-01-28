@@ -27,7 +27,7 @@ if($_POST) //Post Data received from Shopping cart page.
 			echo "<div style='color:red; background-color: #ffe6e6; padding: 10px; border-radius: 5px; margin-bottom: 10px;'>";
 			echo "<b>Product ID $productId: $item[name] is out of stock.</b><br>";
 			echo "Please <a href='shoppingCart.php'>return to the shopping cart</a> to amend your purchase.";
-			echo "</div>";s
+			echo "</div>";
 			include("footer.php"); // Include the Page Layout footer
 			exit; // Stop the checkout process
 		}
