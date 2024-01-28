@@ -164,7 +164,7 @@ function updateCharges() {
 function validateForm() {
     var deliveryMode = document.querySelector('input[name=\"delivery_mode\"]:checked');
     if (!deliveryMode) {
-        alert('Please select a delivery mode before checking out');
+        alert('Please select a delivery mode before checking outs');
         return false;
     }
     return true;
