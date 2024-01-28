@@ -106,6 +106,23 @@ if (isset($_SESSION["Cart"])) {
         $_SESSION["SubTotal"] = round($subTotal, 2);
 
 
+        echo "<form action='checkoutProcess.php' method='post' id='checkoutForm'>";
+        echo "<b style='margin-bottom: 10px; display: block;'>Delivery Mode:</b>";
+        echo "<div style='margin-bottom: 10px;'>";
+        echo "<input type='radio' name='delivery_mode' value='Normal Delivery' id='normalDelivery' checked> Normal Delivery (S$ 5) - Delivered within 2 working days ";
+        echo "</div>";
+        echo "<div>";
+        echo "<input type='radio' name='delivery_mode' value='Express Delivery' id='expressDelivery'> Express Delivery (S$ 10) - Delivered within 24 hours";
+        echo "</div>";
+        echo "<button type='button' class='btn btn-primary' onclick='updateCharges()' style='margin-top: 10px;'>Calculate Charges</button>";
+        // Add spacing using div elements
+        echo "<div style='height: 40px;'></div>";
+        // Display the shipping charges and overall total
+        echo "<div id='shippingCharge'>Delivery Fee: S$5.00</div>"; // Display default fee for Normal Delivery
+        echo "<div id='overallTotal' style='text-align:right; font-size:15px; margin-top: 20px; font-weight: bold;'>Total (Inclusive of Delivery Fees): S$"; echo number_format($_SESSION["SubTotal"] + 5.00, 2); echo "</div>"; // Display total including default fee
+        // Add PayPal Checkout button on the shopping cart page
+        echo "<input type='image' style='float:right; margin-top: 20px;' src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' onclick='return validateForm()'>";
+        echo "</form></p>";
 
     } else {
         echo "<h3 style='text-align:center; color:red;'>Empty shopping cart!</h3>";
@@ -116,25 +133,6 @@ if (isset($_SESSION["Cart"])) {
 }
 
 
-echo "<form action='checkoutProcess.php' method='post' id='checkoutForm'>";
-echo "<b style='margin-bottom: 10px; display: block;'>Delivery Mode:</b>";
-echo "<div style='margin-bottom: 10px;'>";
-echo "<input type='radio' name='delivery_mode' value='Normal Delivery' id='normalDelivery' checked> Normal Delivery (S$ 5) - Delivered within 2 working days ";
-echo "</div>";
-echo "<div>";
-echo "<input type='radio' name='delivery_mode' value='Express Delivery' id='expressDelivery'> Express Delivery (S$ 10) - Delivered within 24 hours";
-echo "</div>";
-echo "<button type='button' class='btn btn-primary' onclick='updateCharges()' style='margin-top: 10px;'>Calculate Charges</button>";
-// Add spacing using div elements
-echo "<div style='height: 40px;'></div>";
-// Display the shipping charges and overall total
-echo "<div id='shippingCharge'>Delivery Fee: S$5.00</div>"; // Display default fee for Normal Delivery
-echo "<div id='overallTotal' style='text-align:right; font-size:15px; margin-top: 20px; font-weight: bold;'>Total (Inclusive of Delivery Fees): S$";
-echo number_format($_SESSION["SubTotal"] + 5.00, 2);
-echo "</div>"; // Display total including default fee
-// Add PayPal Checkout button on the shopping cart page
-echo "<input type='image' style='float:right; margin-top: 20px;' src='https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif' onclick='return validateForm()'>";
-echo "</form></p>";
 
 // JavaScript function to update charges based on the selected delivery mode
 echo "<script>
