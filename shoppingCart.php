@@ -35,7 +35,6 @@
         // To Do 1 (Practical 4): 
         // Retrieve from the database and display the shopping cart in a table
         $qry = "SELECT sc.*, p.OfferedPrice, ((CASE WHEN p.OfferedPrice IS NOT NULL THEN p.OfferedPrice ELSE p.Price END) * sc.Quantity) AS Total
-
         FROM ShopCartItem sc
         JOIN Product p ON sc.ProductID = p.ProductID
         WHERE sc.ShopCartID=?";
