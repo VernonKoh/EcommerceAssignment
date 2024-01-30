@@ -51,25 +51,21 @@ include("header.php"); // Include the Page Layout header
     echo "<p class='flower'><img src=$img /></p>";
 
     if ($row["OfferedPrice"] == null) {
-    // Display the price before offer and strike it off
-    $formattedPrice = number_format($row["Price"], 2);
-    echo "<p style='font-weight:bold; color:red; font-size:20px;'>Price: S$ $formattedPrice</p>";
-    }
-
-    else{
       // Display the price before offer and strike it off
-    $formattedPrice = number_format($row["Price"], 2);
-    echo "<p style='text-decoration: line-through;'>Price: S$ $formattedPrice</p>";
-    // Right column - display the product's price
-    $formattedPriceBeforeOffer = number_format($row["OfferedPrice"], 2);
-    echo "<p style='font-weight:bold; color:red; font-size:20px;'>On Offer: S$ $formattedPriceBeforeOffer</p>";
+      $formattedPrice = number_format($row["Price"], 2);
+      echo "<p style='font-weight:bold; color:red; font-size:20px;'>Price: S$ $formattedPrice</p>";
+    } else {
+      // Display the price before offer and strike it off
+      $formattedPrice = number_format($row["Price"], 2);
+      echo "<p style='text-decoration: line-through;'>Price: S$ $formattedPrice</p>";
+      // Right column - display the product's price
+      $formattedPriceBeforeOffer = number_format($row["OfferedPrice"], 2);
+      echo "<p style='font-weight:bold; color:red; font-size:20px;'>On Offer: S$ $formattedPriceBeforeOffer</p>";
     }
     if ($row["Quantity"] <= 0) {
       echo "<p style='color:red; font-size:30px;'>Out of Stock</p>";
       echo "<button type='submit' class='buttondisable' disabled>Add to Cart</button>";
-    }
-
-    else{
+    } else {
       echo "<form action='cartFunctions.php' method='post'>";
       echo "<input type='hidden' name='action' value='add' />";
       echo "<input type='hidden' name='product_id' value='$pid' />";
@@ -100,7 +96,7 @@ include("header.php"); // Include the Page Layout header
   <style>
     .flower {
       text-align: center;
-      
+
     }
 
     .flower img {
@@ -127,6 +123,7 @@ include("header.php"); // Include the Page Layout header
       /* White */
       border: none;
     }
+
     .buttondisable {
       padding: 10px 20px;
       margin: 10px;

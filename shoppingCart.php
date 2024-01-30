@@ -34,8 +34,12 @@
 
         // To Do 1 (Practical 4): 
         // Retrieve from the database and display the shopping cart in a table
-        $qry = "SELECT *, (Price*Quantity) AS Total
-                FROM ShopCartItem WHERE ShopCartID=?";
+        $qry = "SELECT sc.*, p.OfferedPrice, ((CASE WHEN p.OfferedPrice IS NOT NULL THEN p.OfferedPrice ELSE p.Price END) * sc.Quantity) AS Total
+
+        FROM ShopCartItem sc
+        JOIN Product p ON sc.ProductID = p.ProductID
+        WHERE sc.ShopCartID=?";
+
         $stmt = $conn->prepare($qry);
         $stmt->bind_param("i", $_SESSION["Cart"]); // "i" - integer
         $stmt->execute();
@@ -45,14 +49,15 @@
         if ($result->num_rows > 0) {
             // To Do 2 (Practical 4): Format and display 
             // the page header and header row of the shopping cart page
-            echo "<p class='page-title' style='text-align:center'>Shopping Cart</p>";
+            echo "<p class='page-title' style='text-align:center; margin:10px;'>Shopping Cart</p>";
             echo "<div class='table-responsive' >"; // Bootstrap responsive table
             echo "<table class='table table-hover'>"; // Start of the table
             echo "<thead class='cart-header'>"; // Start of the table's header section
             echo "<tr>"; // Start of the header row
-    
-            echo "<th width ='250px'>Item</th>";
+            echo "<th style='width:60px; text-align: center;'>Product ID</th>";
+            echo "<th width ='250px'>Item Name</th>";
             echo "<th width='90px'>Price (S$)</th>";
+
             echo "<th width='60px'>Quantity</th>";
             echo "<th width='120px'>Total (S$)</th>";
             echo "<th>&nbsp;</th>";
@@ -72,12 +77,25 @@
     
             while ($row = $result->fetch_array()) {
                 echo "<tr>";
+                echo "<td style='width:10%; text-align:center;'>$row[ProductID]</td>";
                 echo "<td style='width:50%'>$row[Name]<br />";
-                echo "Product ID: $row[ProductID]</td>";
-                $formattedPrice = number_format($row["Price"], 2);
+
+                // Check if there is an offered price and it is not null
+                if (isset($row["OfferedPrice"]) && $row["OfferedPrice"] !== null) {
+                    // Use the offered price if it exists
+                    $formattedPrice = number_format($row["OfferedPrice"], 2);
+                } else {
+                    // Otherwise, use the regular price
+                    $formattedPrice = number_format($row["Price"], 2);
+                }
+
                 echo "<td>$formattedPrice</td>";
+
+
+
+
                 echo "<td>"; // Column for updating the quantity of purchase
-                echo "<form action='cartFunctions.php' method='post'>";
+                echo "<form action='cartFunctions.php' method='post' style='text-align:center;'>";
                 echo "<select name='quantity' onChange='this.form.submit()'>";
 
                 for ($i = 1; $i <= 10; $i++) { // To populate the drop-down list from 1 to 10
@@ -88,10 +106,11 @@
                 echo "</select>";
                 echo "<input type='hidden' name='action' value='update' />";
                 echo "<input type ='hidden' name='product_id' value='$row[ProductID]' />";
+
                 echo "</form>";
                 echo "</td>";
                 $formattedTotal = number_format($row["Total"], 2);
-                echo "<td>$formattedTotal</td>";
+                echo "<td style='text-align:center;'>$formattedTotal</td>";
                 echo "<td>"; // Column for removing an item from the shopping cart
                 echo "<form action='cartFunctions.php' method='post'>";
                 echo "<input type='hidden' name='action' value='remove' />";
@@ -111,7 +130,9 @@
                 );
 
                 // Accumulate the running subtotal
-                $subTotal += $row["Total"];
+                $subTotal += (isset($row["OfferedPrice"]) && $row["OfferedPrice"] !== null) ? ($row["OfferedPrice"] * $row["Quantity"]) : ($row["Price"] * $row["Quantity"]);
+
+
 
                 // Accumulate the total quantity of items
                 $totalItems += $row["Quantity"];
@@ -125,7 +146,7 @@
 
             // To Do 4 (Practical 4): 
 // Display the subtotal at the end of the shopping cart
-            echo "<p style='text-align:right; font-size:20px'>
+            echo "<p style='text-align:right; font-size:20px; font-weight:bold;'>
 Subtotal = S$<span id='subtotalValue'>" . number_format($subTotal, 2) . "</span>";
             $_SESSION["SubTotal"] = round($subTotal, 2);
 
@@ -137,9 +158,9 @@ Subtotal = S$<span id='subtotalValue'>" . number_format($subTotal, 2) . "</span>
             echo "<div>";
             echo "<input type='radio' name='delivery_mode' value='Express Delivery' id='expressDelivery'> Express Delivery (S$ 10) - Delivered within 24 hours";
             echo "</div>";
-            echo "<button type='button' class='btn btn-primary' onclick='updateCharges()' style='margin-top: 10px;'>Calculate Charges</button>";
+            echo "<button type='button' class='btn btn-primary' onclick='updateCharges()' style='margin-top: 15px;'>Calculate Charges</button>";
             // Add spacing using div elements
-            echo "<div style='height: 40px;'></div>";
+            echo "<div style='height: 20px;'></div>";
 
             // To Do 7: Display the shipping charges and overall total
             $deliveryCharge = ($_SESSION["SubTotal"] > 200) ? 0 : 5.00;
