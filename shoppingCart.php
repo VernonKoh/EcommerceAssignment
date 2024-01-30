@@ -50,6 +50,7 @@
             echo "<table class='table table-hover'>"; // Start of the table
             echo "<thead class='cart-header'>"; // Start of the table's header section
             echo "<tr>"; // Start of the header row
+    
             echo "<th width ='250px'>Item</th>";
             echo "<th width='90px'>Price (S$)</th>";
             echo "<th width='60px'>Quantity</th>";
@@ -65,6 +66,8 @@
             // To Do 3 (Practical 4): 
             // Display the shopping cart content
             $subTotal = 0; // Declare a variable to compute the subtotal before tax
+            $totalItems = 0; // Initialize a variable to store the total number of items
+    
             echo "<tbody>"; // Start of the table's body section
     
             while ($row = $result->fetch_array()) {
@@ -109,12 +112,17 @@
 
                 // Accumulate the running subtotal
                 $subTotal += $row["Total"];
+
+                // Accumulate the total quantity of items
+                $totalItems += $row["Quantity"];
             }
 
             echo "</tbody>"; // End of the table's body section
             echo "</table>"; // End of the table
             echo "</div>"; // End of the Bootstrap responsive table
     
+
+
             // To Do 4 (Practical 4): 
 // Display the subtotal at the end of the shopping cart
             echo "<p style='text-align:right; font-size:20px'>
@@ -138,8 +146,14 @@ Subtotal = S$<span id='subtotalValue'>" . number_format($subTotal, 2) . "</span>
             $message = ($_SESSION["SubTotal"] > 200) ? "Congratulations! Since your order exceeds $200, your delivery charge will be waived! <br> Express Delivery will be provided." : "";
             echo "<div id='shippingChargeValue'>Delivery Fee: S$" . number_format($deliveryCharge, 2) . "<br>" . $message . "</div>";
 
+            // Display the total number of items 
+            echo "<div class='row justify-content-end'>";
+            echo "<div style='text-align:right;'>"; // align right
+            echo "<p>Total Items in Cart: " . $totalItems . "</p>";
+            echo "</div>";
+            echo "</div>";
 
-            echo "<div id='overallTotal' style='text-align:right; font-size:15px; margin-top: 20px; font-weight: bold;'>Total (Inclusive of Delivery Fees): S$";
+            echo "<div id='overallTotal' style='text-align:right; font-size:15px; margin-top: 10px; font-weight: bold;'>Total (Inclusive of Delivery Fees): S$";
             echo number_format($_SESSION["SubTotal"] + $deliveryCharge, 2);
             echo "</div>"; // Display total including delivery fee
             // Add PayPal Checkout button on the shopping cart page
@@ -153,6 +167,8 @@ Subtotal = S$<span id='subtotalValue'>" . number_format($subTotal, 2) . "</span>
     } else {
         echo "<h3 style='text-align:center; color:red;'>Empty shopping cart!</h3>";
     }
+
+
 
     // JavaScript function to update charges based on the selected delivery mode
     echo "<script>
@@ -198,21 +214,14 @@ Subtotal = S$<span id='subtotalValue'>" . number_format($subTotal, 2) . "</span>
             console.error('Overall total element not found.');
         }
     
-        // To Do 9: Update the delivery message directly
-        var deliveryMessageElement = document.getElementById('deliveryWaiverMessage');
-        if (deliveryMessageElement) {
-            var deliveryMessage = (subtotal > 200) ? \"Congratulations! Since your order exceeds $200, it qualifies for free delivery!\" : \"Delivery Fee: S$\" + shipCharge.toFixed(2);
-            deliveryMessageElement.innerHTML = deliveryMessage;
-        } else {
-            console.error('Delivery message element not found.');
-        }
+        
     }
     
 
 function validateForm() {
     var deliveryMode = document.querySelector('input[name=\"delivery_mode\"]:checked');
     if (!deliveryMode) {
-        alert('Please select a delivery mode before checking outs');
+        alert('Please select a delivery mode before checking out');
         return false;
     }
     return true;
