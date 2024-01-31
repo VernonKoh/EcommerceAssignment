@@ -192,7 +192,7 @@ Subtotal = S$<span id='subtotalValue'>" . number_format($subTotal, 2) . "</span>
         }
         $conn->close(); // Close the database connection
     } else {
-        echo "<h3 style='text-align:center; color:red;'>Empty shopping cart!</h3>";
+        echo "<h3 style='text-align:center; color:red; font-weight:bold;'>Empty shopping cart!</h3>";
     }
 
 
