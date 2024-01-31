@@ -15,7 +15,7 @@ if (isset($_SESSION["ShopperName"])) {
 
   $content1 = "Welcome <b>$_SESSION[ShopperName]</b>";
   $content2 = "<li class='nav-item'>
-    <a class='nav-link' href='changepassword.php'>Change Password</a></li>
+  <li class='nav-item'><a class='nav-link' href='update.php'>Update Profile</a></li>
     <li class='nav-item'>
     <a class='nav-link' href='logout.php'>Logout</a></li>";
 
@@ -67,6 +67,10 @@ if (isset($_SESSION["ShopperName"])) {
         <li class="nav-item">
           <a class="nav-link" href="shoppingCart.php">Shopping Cart</a>
         </li>
+                <!--Review-->
+                <li class="nav-item">
+                    <a class="nav-link" href="review.php">Review</a>
+                </li>
       </ul>
       <!-- Right-justified menu items -->
       <ul class="navbar-nav ms-auto">
