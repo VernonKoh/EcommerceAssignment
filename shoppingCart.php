@@ -10,6 +10,13 @@
     <link rel="stylesheet" href="style.css">
     <style>
         /* Add your custom styles here */
+        .wobble-bin {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .wobble-bin:hover {
+            transform: rotate(8deg);
+        }
     </style>
 </head>
 
@@ -114,7 +121,7 @@
                 echo "<form action='cartFunctions.php' method='post'>";
                 echo "<input type='hidden' name='action' value='remove' />";
                 echo "<input type='hidden' name='product_id' value='$row[ProductID]' />";
-                echo "<input type='image' src='Images/Others/trash-can.png' title='Remove Item' />";
+                echo "<input class='wobble-bin' type='image' src='Images/Others/trash-can.png' title='Remove Item' />";
                 echo "</form>";
                 echo "</td>";
                 echo "</tr>";
