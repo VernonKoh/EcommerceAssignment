@@ -1,7 +1,6 @@
 <?php
-
-//Display guest welcome message, Login and Registration links
-//when shopper has yet to login,
+// Display guest welcome message, Login and Registration links
+// when shopper has yet to login,
 $content1 = "Welcome Guest<br />";
 $content2 = "<li class='nav-item'>
 		     <a class='nav-link' href='register.php'>Sign Up</a></li>
@@ -9,21 +8,20 @@ $content2 = "<li class='nav-item'>
 		     <a class='nav-link' href='login.php'>Login</a></li>";
 
 if (isset($_SESSION["ShopperName"])) {
-  //To Do 1 (Practical 2) - 
-  //Display a greeting message, Change Password and logout links 
-  //after shopper has logged in.
+  // To Do 1 (Practical 2) - 
+  // Display a greeting message, Change Password and logout links 
+  // after the shopper has logged in.
 
   $content1 = "Welcome <b>$_SESSION[ShopperName]</b>";
   $content2 = "<li class='nav-item'>
-    <a class='nav-link' href='changepassword.php'>Change Password</a></li>
-    <li class='nav-item'>
-    <a class='nav-link' href='logout.php'>Logout</a></li>";
+        <a class='nav-link' href='update.php'>Update Profile</a></li>
+        <li class='nav-item'>
+        <a class='nav-link' href='logout.php'>Logout</a></li>";
 
-  //To Do 2 (Practical 4) - 
-  //Display number of item in cart
+  // To Do 2 (Practical 4) - 
+  // Display the number of items in the cart
   if (isset($_SESSION["NumCartItem"])) {
-    $content1 .= ", $_SESSION[NumCartItem] item(s) in shopping cart.";
-
+    $content1 .= "! Explore our products and enjoy your shopping experience.";
   }
 }
 ?>
@@ -39,33 +37,47 @@ if (isset($_SESSION["ShopperName"])) {
 
     <form name="frmSearch" method="get" action="search.php">
       <div class="search-container">
-        <input type="search" class="search-bar" s id="search" name="keywords" placeholder="Search..." required>
+        <input type="search" class="search-bar" id="search" name="keywords" placeholder="Search..." required>
         <button type="submit" class="submit-button"><img src="Images/Others/searchicon.png" alt="Search"></button>
       </div>
     </form>
 
-    <!-- Toggler/Collapsibe Button -->
+    <!-- Toggler/Collapsible Button -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
   </div>
 </nav>
+
 <!-- To Do 4 (Practical 1) - 
      Define a collapsible navbar -->
-
-
 <nav class="navbar navbar-expand-md navbar-dark bg-dark">
   <div class="container-fluid">
-    <!-- Collapsible part of navbar -->
-    <div class="collapse navbar-collapse" id="collapsibleNavbar"> <!-- Left-justified menu items -->
+    <!-- Collapsible part of the navbar -->
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <!-- Left-justified menu items -->
       <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.php">Home</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link" href="category.php">Product Categories</a>
         </li>
-         <li class="nav-item" >
-<a class="nav-link" href="pricesearch.php">Price Search</a> </li> 
         <li class="nav-item">
-          <a class="nav-link" href="shoppingCart.php">Shopping Cart</a>
+          <a class="nav-link" href="pricesearch.php">Price Search</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="shoppingCart.php">Shopping Cart
+            <?php
+            if (isset($_SESSION["NumCartItem"]) && $_SESSION["NumCartItem"] > 0) {
+              echo "(" . $_SESSION["NumCartItem"] . ")";
+            }
+            ?>
+          </a>
+        </li>
+        <!--Review-->
+        <li class="nav-item">
+          <a class="nav-link" href="review.php">Review</a>
         </li>
       </ul>
       <!-- Right-justified menu items -->
