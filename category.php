@@ -18,7 +18,7 @@ include_once("mysql_conn.php");
 
 // To Do:  Starting ....
 
-$qry = "SELECT * FROM Category"; // Form SQL to select all categories 
+$qry = "SELECT * FROM Category order by CatName asc"; // Form SQL to select all categories 
 $result = $conn->query($qry); // Execute the SQL and get the result
 
 // Display each category in a row

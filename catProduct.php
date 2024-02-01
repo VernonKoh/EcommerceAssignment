@@ -20,7 +20,7 @@ include_once("mysql_conn.php");
 
 $cid= $_GET["cid"]; // Read Category ID from query string
 // Form SQL to retrieve list of products associated with the Category ID
-$qry = "SELECT p.ProductID, p.ProductTitle, p.ProductImage, p.Price, p.Quantity, p.Offered,p.OfferedPrice FROM CatProduct cp INNER JOIN product p ON cp.ProductID=p.ProductID WHERE cp.CategoryID=?";
+$qry = "SELECT p.ProductID, p.ProductTitle, p.ProductImage, p.Price, p.Quantity, p.Offered,p.OfferedPrice FROM CatProduct cp INNER JOIN product p ON cp.ProductID=p.ProductID WHERE cp.CategoryID=? order by p.ProductTitle asc";
 $stmt = $conn->prepare($qry);
 $stmt->bind_param("i", $cid); // "i" integer
 $stmt->execute();

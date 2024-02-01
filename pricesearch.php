@@ -16,7 +16,10 @@
 <body>
 <div class="row">
             <div class="col-sm-12">
-                <?php include("header.php");?>
+                
+                <?php
+                session_start(); 
+                include("header.php");?>
 
             </div>
     <div class="container">
@@ -36,12 +39,13 @@
                                 </div>
                                 <div class="col-md-4">
                                     <label for="">End Price</label>
-                                    <input type="text" name="end_price" value="<?php if(isset($_GET['end_price'])){echo $_GET['end_price']; }else{echo "0";} ?>" class="form-control" required>
+                                    <input type="text" name="end_price" value="<?php if(isset($_GET['end_price'])){echo $_GET['end_price']; }else{echo "1000";} ?>" class="form-control" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label for="">Click Me</label> <br/>
                                     <button type="submit" class="btn btn-primary px-4">Filter</button>
                                 </div>
+                                
                             </div>
                         </form>
 
@@ -58,7 +62,7 @@
                         <div class="row">
 
                         <?php  
-                         include_once("mysql_conn.php");
+                        include_once("mysql_conn.php");
 
                         if(isset($_GET['start_price']) && isset($_GET['end_price']))
                         {
@@ -94,10 +98,10 @@
                         {
                             $query = "SELECT DISTINCT p.ProductID, p.ProductTitle, p.ProductImage,p.ProductDesc ,p.Price, p.Quantity ,p.Offered,p.OfferedPrice
                             FROM Product p INNER JOIN ProductSpec ps ON p.ProductID=ps.ProductID ORDER BY ProductTitle";
+                            
                         }
                         
-                        // $query_run = mysqli_query($con, $query);
-                        // $qry = "SELECT * from product where ProductID=?";
+                        
                         
                         $result = $conn->query($query); // Execute the SQL and get the result
                         if ($result->num_rows > 0) { // If found, display records
@@ -141,6 +145,9 @@
                         else {
                             echo " No records found!";
                         }
+
+                        
+                        
                         
                         include("footer.php"); // Include the Page Layout footer
                         ?>

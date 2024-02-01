@@ -17,11 +17,12 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
-            
+                <a href="index.php">
                 <div class="w3-content w3-section" style="max-width:100%">
                 <img class="mySlides" src="Images/Others/Banner7.jpg" style="width:100%; height:320px;">
                 <img class="mySlides" src="Images/Others/Banner5.jpg" style="width:100%; height:320px;">
                 <img class="mySlides" src="Images/Others/Banner6.jpg" style="width:100%; height:320px;">
+                </a>
                 </div>
         </div>
         
