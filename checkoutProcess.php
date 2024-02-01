@@ -64,14 +64,19 @@ if($_POST) //Post Data received from Shopping cart page.
 	}	
 	
 	// To Do 1A: Compute Shipping charge - Retrieve it dynamically from the form
-    if (isset($_POST['delivery_mode'])) {
-        $selectedDeliveryMode = $_POST['delivery_mode'];
-        $_SESSION["ShipCharge"] = ($selectedDeliveryMode === 'Normal Delivery') ? 5.00 : 10.00;
-    } else {
-        // Default to 0.00 if no option is selected
-        $_SESSION["ShipCharge"] = 0.00;
-    }
-	
+	if ($_SESSION["SubTotal"] > 200) {
+		// If subtotal is greater than $200, waive the delivery fee
+		$_SESSION["ShipCharge"] = 0.00;
+	} else {
+		// Otherwise, set the delivery fee based on the selected delivery mode
+		if (isset($_POST['delivery_mode'])) {
+			$selectedDeliveryMode = $_POST['delivery_mode'];
+			$_SESSION["ShipCharge"] = ($selectedDeliveryMode === 'Normal Delivery') ? 5.00 : 10.00;
+		} else {
+			// Default to $5.00 if no option is selected
+			$_SESSION["ShipCharge"] = 5.00;
+		}
+	}
 	//Data to be sent to PayPal
 	$padata = '&CURRENCYCODE='.urlencode($PayPalCurrencyCode).
 			  '&PAYMENTACTION=Sale'.
