@@ -14,7 +14,7 @@ include("header.php");
         </div>
 
         <div class="mb-3 row">
-            <label class="col-sm-3 col-form-label" for="productName">Product Name:</label>
+            <label class="col-sm-3 col-form-label" for="productName">Topic:</label>
             <div class="col-sm-9">
                 <input class="form-control" name="productName" id="productName" type="text" required />
                 (required)

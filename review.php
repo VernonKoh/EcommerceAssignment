@@ -37,7 +37,7 @@ include("header.php"); // Include the Page Layout header
 
         // Display review details
         echo "<div class='col-8'>";
-        echo "<p>Product Title: {$row['ProductName']}</p>";
+        echo "<p>Topic: {$row['ProductName']}</p>";
         echo "<p>Star Rating: {$row['StarRating']}</p>";
         echo "<p>Feedback: {$row['Feedback']}</p>";
         echo "<p>Date: {$row['Date']}</p>";
