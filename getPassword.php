@@ -29,7 +29,11 @@ if ($_user && $answer == $_user['PwdAnswer']) {
     $_SESSION["Password"] = $_user["Password"];
 
 } else {
-    echo "<h3 style='color:red'>Invalid Login Credentials</h3>";
+    // Display error message and exit
+    echo "<h3 style='color:red'>Invalid Password Answer</h3>";
+    // Include the Page Layout footer and exit
+    include("footer.php");
+    exit(); // Stop executing the rest of the script
 }
 
 // Display Security Question

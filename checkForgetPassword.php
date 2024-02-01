@@ -28,7 +28,11 @@ if ($_user && $email == $_user['Email']) {
     // Save user's info in session variables
     $_SESSION["SecurityQn"] = $_user["PwdQuestion"];
 } else {
-    echo  "<h3 style='color:red'>Invalid Login Credentials</h3>";
+    // Email does not exist in the database
+    echo  "<h3 style='color:red'>Email does not exist</h3>";
+    // Include the Page Layout footer
+    include("footer.php");
+    exit(); // Stop further execution
 }
 
 // Display Security Question
@@ -65,7 +69,7 @@ if (isset($_SESSION["ShopperName"])) {
                 <input class="form-control" type="text" name="answer" id="answer" required />
             </div>
         </div>
-        <!-- Submit Buttin to get password -->
+        <!-- Submit Button to get password -->
         <div class="mb-3 row">
             <div class="col-sm-9 offset-sm-3">
                 <button type="submit" class="btn btn-primary">Get Password</button>
