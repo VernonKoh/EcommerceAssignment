@@ -70,7 +70,7 @@ include("header.php"); // Include the Page Layout header
       echo "<input type='hidden' name='action' value='add' />";
       echo "<input type='hidden' name='product_id' value='$pid' />";
       echo "Quantity: <input type='number' name='quantity' value='1' min='1' max='10' style='width:40px' required />";
-      echo "<button type='submit' class='cartbutton'>Add to Cart</button>";
+      echo "<button type='submit' class='cartbutton' style='border-radius:10px;'>Add to Cart</button>";
 
       echo "</form>";
     }

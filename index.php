@@ -8,7 +8,6 @@ include("header.php");
      style="display:block; margin:auto;"/> -->
 <style>
     * {
-        font-family: 'Poppins';
         margin: 0;
         padding: 0;
         scroll-padding-top: 1rem;
