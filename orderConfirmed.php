@@ -87,7 +87,7 @@ include("header.php"); // Include the Page Layout header
 
             // Calculate and display total amount
             if (isset($_SESSION["SubTotal"])) {
-                $totalAmount = $_SESSION["SubTotal"] + $_SESSION["ShipCharge"];
+                $totalAmount = $_SESSION["SubTotal"] + $_SESSION["ShipCharge"] + $_SESSION["Tax"];
                 echo "<p>Total Amount: <strong>S$ " . number_format($totalAmount, 2) . "</strong></p>";
             }
 

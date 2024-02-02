@@ -153,7 +153,7 @@
             // To Do 4 (Practical 4): 
 // Display the subtotal at the end of the shopping cart
             echo "<p style='text-align:right; font-size:20px; font-weight:bold;'>
-Subtotal = S$<span id='subtotalValue'>" . number_format($subTotal, 2) . "</span>";
+            Subtotal = S$<span id='subtotalValue'>" . number_format($subTotal, 2) . "</span>";
             $_SESSION["SubTotal"] = round($subTotal, 2);
 
             echo "<form action='checkoutProcess.php' method='post' id='checkoutForm'>";
