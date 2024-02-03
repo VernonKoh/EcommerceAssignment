@@ -37,13 +37,19 @@ if($_POST) //Post Data received from Shopping cart page.
 	$paypal_data = '';
 	// Get all items from the shopping cart, concatenate to the variable $paypal_data
 	// $_SESSION['Items'] is an associative array
-	foreach($_SESSION['Items'] as $key=>$item) {
-		$paypal_data .= '&L_PAYMENTREQUEST_0_QTY'.$key.'='.urlencode($item["quantity"]);
-	  	$paypal_data .= '&L_PAYMENTREQUEST_0_AMT'.$key.'='.urlencode($item["price"]);
-	  	$paypal_data .= '&L_PAYMENTREQUEST_0_NAME'.$key.'='.urlencode($item["name"]);
-		$paypal_data .= '&L_PAYMENTREQUEST_0_NUMBER'.$key.'='.urlencode($item["productId"]);
-	}
+
 	
+	foreach($_SESSION['Items'] as $key => $item) {
+		// Determine the price to use (OfferedPrice if available, otherwise Price)
+		$price = isset($item["Price"]) ? $item["OfferedPrice"] : $item["Price"]; 
+	
+		// Update PayPal data with the correct price
+		$paypal_data .= '&L_PAYMENTREQUEST_0_QTY' . $key . '=' . urlencode($item["quantity"]);
+		$paypal_data .= '&L_PAYMENTREQUEST_0_AMT' . $key . '=' . urlencode($price);
+		$paypal_data .= '&L_PAYMENTREQUEST_0_NAME' . $key . '=' . urlencode($item["name"]);
+		$paypal_data .= '&L_PAYMENTREQUEST_0_NUMBER' . $key . '=' . urlencode($item["productId"]);
+		$paypal_data .= '&L_PAYMENTREQUEST_0_ITEMAMT=' . $key . '=' . urlencode($item["price"]);
+	}
 	// Fetch current GST rate from database
 	$currentDate = date("Y-m-d");
 	$getGSTRateQuery = "SELECT TaxRate FROM gst WHERE EffectiveDate <= ? ORDER BY EffectiveDate DESC LIMIT 1";
@@ -130,14 +136,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 	
 	// Get all items from the shopping cart, concatenate to the variable $paypal_data
 	// $_SESSION['Items'] is an associative array
-	foreach($_SESSION['Items'] as $key=>$item) 
-	{
-		$paypal_data .= '&L_PAYMENTREQUEST_0_QTY'.$key.'='.urlencode($item["quantity"]);
-	  	$paypal_data .= '&L_PAYMENTREQUEST_0_AMT'.$key.'='.urlencode($item["price"]);
-	  	$paypal_data .= '&L_PAYMENTREQUEST_0_NAME'.$key.'='.urlencode($item["name"]);
-		$paypal_data .= '&L_PAYMENTREQUEST_0_NUMBER'.$key.'='.urlencode($item["productId"]);
-	}
-	
+
 	//Data to be sent to PayPal
 	$padata = '&TOKEN='.urlencode($token).
 			  '&PAYERID='.urlencode($playerid).

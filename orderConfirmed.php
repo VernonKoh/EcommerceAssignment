@@ -85,6 +85,7 @@ include("header.php"); // Include the Page Layout header
                 echo "<p>Delivery Fee: <strong>S$ $_SESSION[ShipCharge]</strong></p>";
             }
 
+            
             // Calculate and display total amount
             if (isset($_SESSION["SubTotal"])) {
                 $totalAmount = $_SESSION["SubTotal"] + $_SESSION["ShipCharge"] + $_SESSION["Tax"];
