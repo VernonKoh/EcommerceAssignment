@@ -38,6 +38,33 @@ if($_POST) //Post Data received from Shopping cart page.
 	// Get all items from the shopping cart, concatenate to the variable $paypal_data
 	// $_SESSION['Items'] is an associative array
 
+	// Calculate discount and update shopcart table with discount
+	// Calculate discount and update shopcart table with discount
+	
+	$index = 0; // Initialize index for each item in the shopping cart
+	foreach ($_SESSION['Items'] as $item) {
+		$index++; // Increment index for each item
+
+		// Retrieve price and offered price from the product table
+		$productId = $item["productId"];
+		$getProductPriceQuery = "SELECT Price, OfferedPrice FROM product WHERE ProductID = ?";
+		$stmt = $conn->prepare($getProductPriceQuery);
+		$stmt->bind_param("i", $productId);
+		$stmt->execute();
+		$stmt->bind_result($price, $offeredPrice);
+		$stmt->fetch();
+		$stmt->close();
+
+		// Calculate discount
+		$discount = $price - $offeredPrice;
+
+		// Update shopcart table with the calculated discount
+		$updateShopcartQuery = "UPDATE shopcart SET Discount = ? WHERE ShopCartID = ?";
+		$stmt = $conn->prepare($updateShopcartQuery);
+		$stmt->bind_param("di", $discount, $index); // Use index as the identifier
+		$stmt->execute();
+		$stmt->close();
+	}
 	
 	foreach($_SESSION['Items'] as $key => $item) {
 		// Determine the price to use (OfferedPrice if available, otherwise Price)
@@ -177,17 +204,28 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 	
 		// To Do 2: Update shopcart table, close the shopping cart (OrderPlaced=1)
 		$total = $_SESSION["SubTotal"] + $_SESSION["Tax"] + $_SESSION["ShipCharge"];
-		$qry = "UPDATE shopcart SET OrderPlaced=1, Quantity=?,
-				SubTotal=?, ShipCharge=?, Tax=?, Total=?
-				WHERE ShopCartID=?";
-		$stmt = $conn->prepare($qry);
+		foreach ($_SESSION['Items'] as $item) {
+			// Calculate discount for each item
+			$productId = $item["productId"];
+			$getProductPriceQuery = "SELECT Price, OfferedPrice FROM product WHERE ProductID = ?";
+			$stmt = $conn->prepare($getProductPriceQuery);
+			$stmt->bind_param("i", $productId);
+			$stmt->execute();
+			$stmt->bind_result($price, $offeredPrice);
+			$stmt->fetch();
+			$stmt->close();
+			
+			$discount = $price - $offeredPrice;
 
-		$stmt->bind_param("iddddi",$_SESSION["NumCartItem"],
-						  $_SESSION["SubTotal"], $_SESSION["ShipCharge"],
-						  $_SESSION["Tax"], $total,
-						  $_SESSION["Cart"]);
-		$stmt->execute();
-		$stmt->close();
+			// Update shopcart table with discount and other details
+			$qry = "UPDATE shopcart SET OrderPlaced = 1, Quantity = ?, SubTotal = ?, ShipCharge = ?, Tax = ?, Total = ?, Discount = ?
+					WHERE ShopCartID = ?";
+			$stmt = $conn->prepare($qry);
+			$stmt->bind_param("idddidi", $_SESSION["NumCartItem"], $_SESSION["SubTotal"], $_SESSION["ShipCharge"], $_SESSION["Tax"], $total, $discount, $_SESSION["Cart"]);
+			$stmt->execute();
+			$stmt->close();
+		}
+
 		// End of To Do 2
 		
 		//We need to execute the "GetTransactionDetails" API Call at this point 
