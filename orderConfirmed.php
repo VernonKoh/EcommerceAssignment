@@ -82,7 +82,7 @@ include("header.php"); // Include the Page Layout header
 
             // Display discount amount
             if (isset($_SESSION["Discount"])) {
-                echo "<p>Discount on Item: <strong>S$ $_SESSION[Discount]</strong></p>";
+                echo "<p>Discount on Item(s): <strong>S$ $_SESSION[Discount]</strong></p>";
             }
 
             // Display delivery mode

@@ -72,15 +72,24 @@ foreach ($_SESSION['Items'] as $index => $item) {
     $stmt->close();
 }
 
-// Store the total discount amount in the session
-$_SESSION["Discount"] = $totalDiscount;
+
 	foreach($_SESSION['Items'] as $key => $item) {
 		// Determine the price to use (OfferedPrice if available, otherwise Price)
-		$price = isset($item["Price"]) ? $item["OfferedPrice"] : $item["Price"]; 
-	
+		$price = isset($item["OfferedPrice"]) ? $item["OfferedPrice"] : $item["price"]; 
+		// Check if there is an offered price and it is not null
+		if (isset($row["OfferedPrice"]) && $row["OfferedPrice"] !== null) {
+			// Use the offered price if it exists
+			$formattedPrice = number_format($row["OfferedPrice"], 2);
+			$item["price"] = $formattedPrice;
+		} else {
+			// Otherwise, use the regular price
+			$formattedPrice = number_format($row["price"], 2);
+			$item["price"] = $formattedPrice;
+		}
+
 		// Update PayPal data with the correct price
 		$paypal_data .= '&L_PAYMENTREQUEST_0_QTY' . $key . '=' . urlencode($item["quantity"]);
-		$paypal_data .= '&L_PAYMENTREQUEST_0_AMT' . $key . '=' . urlencode($price);
+		$paypal_data .= '&L_PAYMENTREQUEST_0_AMT' . $key . '=' . urlencode($item["price"]);
 		$paypal_data .= '&L_PAYMENTREQUEST_0_NAME' . $key . '=' . urlencode($item["name"]);
 		$paypal_data .= '&L_PAYMENTREQUEST_0_NUMBER' . $key . '=' . urlencode($item["productId"]);
 		$paypal_data .= '&L_PAYMENTREQUEST_0_ITEMAMT=' . $key . '=' . urlencode($item["price"]);
@@ -215,21 +224,31 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 		foreach ($_SESSION['Items'] as $item) {
 			// Calculate discount for each item
 			$productId = $item["productId"];
-			$getProductPriceQuery = "SELECT Price, OfferedPrice FROM product WHERE ProductID = ?";
+			$getProductPriceQuery = "SELECT price, OfferedPrice FROM product WHERE ProductID = ?";
 			$stmt = $conn->prepare($getProductPriceQuery);
 			$stmt->bind_param("i", $productId);
 			$stmt->execute();
 			$stmt->bind_result($price, $offeredPrice);
 			$stmt->fetch();
 			$stmt->close();
+			// Calculate discount for each item
+			if (isset($offeredPrice) && $offeredPrice !== null) {
+				// Calculate discount only if OfferedPrice is set and not null
+				$discount = ($price - $offeredPrice) *$item["quantity"] ;
+			} else {
+				// If OfferedPrice is not set or null, set discount to 0
+				$discount = 0;
+			}
+			$totalDiscount += $discount; // Add discount to total
 			
-			$discount = $price - $offeredPrice;
+			// Store the total discount amount in the session
+			$_SESSION["Discount"] = $totalDiscount;
 
 			// Update shopcart table with discount and other details
 			$qry = "UPDATE shopcart SET OrderPlaced = 1, Quantity = ?, SubTotal = ?, ShipCharge = ?, Tax = ?, Total = ?, Discount = ?
 					WHERE ShopCartID = ?";
 			$stmt = $conn->prepare($qry);
-			$stmt->bind_param("idddidi", $_SESSION["NumCartItem"], $_SESSION["SubTotal"], $_SESSION["ShipCharge"], $_SESSION["Tax"], $total, $discount, $_SESSION["Cart"]);
+			$stmt->bind_param("idddidi", $_SESSION["NumCartItem"], $_SESSION["SubTotal"], $_SESSION["ShipCharge"], $_SESSION["Tax"], $total, $totalDiscount, $_SESSION["Cart"]);
 			$stmt->execute();
 			$stmt->close();
 		}
