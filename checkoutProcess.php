@@ -75,21 +75,21 @@ foreach ($_SESSION['Items'] as $index => $item) {
 
 	foreach($_SESSION['Items'] as $key => $item) {
 		// Determine the price to use (OfferedPrice if available, otherwise Price)
-		$price = isset($item["OfferedPrice"]) ? $item["OfferedPrice"] : $item["price"]; 
+		$price = isset($item["OfferedPrice"]) ? $item["OfferedPrice"] : $item["Price"]; 
 		// Check if there is an offered price and it is not null
 		if (isset($row["OfferedPrice"]) && $row["OfferedPrice"] !== null) {
 			// Use the offered price if it exists
 			$formattedPrice = number_format($row["OfferedPrice"], 2);
-			$item["price"] = $formattedPrice;
+
 		} else {
 			// Otherwise, use the regular price
-			$formattedPrice = number_format($row["price"], 2);
-			$item["price"] = $formattedPrice;
+			$formattedPrice = number_format($row["Price"], 2);
+
 		}
 
 		// Update PayPal data with the correct price
 		$paypal_data .= '&L_PAYMENTREQUEST_0_QTY' . $key . '=' . urlencode($item["quantity"]);
-		$paypal_data .= '&L_PAYMENTREQUEST_0_AMT' . $key . '=' . urlencode($item["price"]);
+		$paypal_data .= '&L_PAYMENTREQUEST_0_AMT' . $key . '=' . urlencode($formattedPrice);
 		$paypal_data .= '&L_PAYMENTREQUEST_0_NAME' . $key . '=' . urlencode($item["name"]);
 		$paypal_data .= '&L_PAYMENTREQUEST_0_NUMBER' . $key . '=' . urlencode($item["productId"]);
 		$paypal_data .= '&L_PAYMENTREQUEST_0_ITEMAMT=' . $key . '=' . urlencode($item["price"]);
@@ -224,7 +224,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 		foreach ($_SESSION['Items'] as $item) {
 			// Calculate discount for each item
 			$productId = $item["productId"];
-			$getProductPriceQuery = "SELECT price, OfferedPrice FROM product WHERE ProductID = ?";
+			$getProductPriceQuery = "SELECT Price, OfferedPrice FROM product WHERE ProductID = ?";
 			$stmt = $conn->prepare($getProductPriceQuery);
 			$stmt->bind_param("i", $productId);
 			$stmt->execute();
