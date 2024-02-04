@@ -55,7 +55,7 @@
         if ($result->num_rows > 0) {
             // To Do 2 (Practical 4): Format and display 
             // the page header and header row of the shopping cart page
-            echo "<p class='page-title' style='text-align:center; margin:10px;'>Shopping Cart</p>";
+            echo "<p class='page-title' style='text-align:center; margin:10px auto;'>Shopping Cart</p>";
             echo "<div class='table-responsive' >"; // Bootstrap responsive table
             echo "<table class='table table-hover'>"; // Start of the table
             echo "<thead class='cart-header'>"; // Start of the table's header section
