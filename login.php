@@ -5,7 +5,7 @@ session_start();
 include("header.php");
 ?>
 <!-- Create a centrally located container -->
-<div style="width:80%; margin:10px;">
+<div style="width:80%; margin:10px auto;">
     <!-- Create a HTML Form within the container -->
     <form action="checkLogin.php" method="post">
         <!-- 1st row - Header Row -->
