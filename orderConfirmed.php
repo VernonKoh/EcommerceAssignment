@@ -80,12 +80,18 @@ include("header.php"); // Include the Page Layout header
                 echo "</ul>";
             }
 
+            // Display discount amount
+            if (isset($_SESSION["Discount"])) {
+                echo "<p>Discount on Item: <strong>S$ $_SESSION[Discount]</strong></p>";
+            }
+
             // Display delivery mode
             if (isset($_SESSION["ShipCharge"])) {
                 echo "<p>Delivery Fee: <strong>S$ $_SESSION[ShipCharge]</strong></p>";
             }
-
-            
+            if (isset($_SESSION["Tax"])) {
+                echo "<p>Tax Amount: <strong>S$ $_SESSION[Tax]</strong></p>";
+            }
             // Calculate and display total amount
             if (isset($_SESSION["SubTotal"])) {
                 $totalAmount = $_SESSION["SubTotal"] + $_SESSION["ShipCharge"] + $_SESSION["Tax"];

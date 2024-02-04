@@ -41,31 +41,39 @@ if($_POST) //Post Data received from Shopping cart page.
 	// Calculate discount and update shopcart table with discount
 	// Calculate discount and update shopcart table with discount
 	
-	$index = 0; // Initialize index for each item in the shopping cart
-	foreach ($_SESSION['Items'] as $item) {
-		$index++; // Increment index for each item
+	$totalDiscount = 0; // Initialize total discount
 
-		// Retrieve price and offered price from the product table
-		$productId = $item["productId"];
-		$getProductPriceQuery = "SELECT Price, OfferedPrice FROM product WHERE ProductID = ?";
-		$stmt = $conn->prepare($getProductPriceQuery);
-		$stmt->bind_param("i", $productId);
-		$stmt->execute();
-		$stmt->bind_result($price, $offeredPrice);
-		$stmt->fetch();
-		$stmt->close();
+foreach ($_SESSION['Items'] as $index => $item) {
+    // Retrieve price and offered price from the product table
+    $productId = $item["productId"];
+    $getProductPriceQuery = "SELECT Price, OfferedPrice FROM product WHERE ProductID = ?";
+    $stmt = $conn->prepare($getProductPriceQuery);
+    $stmt->bind_param("i", $productId);
+    $stmt->execute();
+    $stmt->bind_result($price, $offeredPrice);
+    $stmt->fetch();
+    $stmt->close();
 
-		// Calculate discount
-		$discount = $price - $offeredPrice;
+    // Calculate discount for each item
+    if (isset($offeredPrice) && $offeredPrice !== null) {
+        // Calculate discount only if OfferedPrice is set and not null
+        $discount = $price - $offeredPrice;
+    } else {
+        // If OfferedPrice is not set or null, set discount to 0
+        $discount = 0;
+    }
+    $totalDiscount += $discount; // Add discount to total
 
-		// Update shopcart table with the calculated discount
-		$updateShopcartQuery = "UPDATE shopcart SET Discount = ? WHERE ShopCartID = ?";
-		$stmt = $conn->prepare($updateShopcartQuery);
-		$stmt->bind_param("di", $discount, $index); // Use index as the identifier
-		$stmt->execute();
-		$stmt->close();
-	}
-	
+    // Update shopcart table with the calculated discount
+    $updateShopcartQuery = "UPDATE shopcart SET Discount = ? WHERE ShopCartID = ?";
+    $stmt = $conn->prepare($updateShopcartQuery);
+    $stmt->bind_param("di", $discount, $item["ShopCartID"]); // Use ShopCartID as the identifier
+    $stmt->execute();
+    $stmt->close();
+}
+
+// Store the total discount amount in the session
+$_SESSION["Discount"] = $totalDiscount;
 	foreach($_SESSION['Items'] as $key => $item) {
 		// Determine the price to use (OfferedPrice if available, otherwise Price)
 		$price = isset($item["Price"]) ? $item["OfferedPrice"] : $item["Price"]; 
